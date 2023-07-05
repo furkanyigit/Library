@@ -24,13 +24,15 @@ import java.util.Set;
 public class Author {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "author_id")
     private Long authorId;
     @Column(name = "author_first_name")
     private String aFirstName;
     @Column(name = "author_last_name")
     private String aLastName;
+
     @OneToMany(mappedBy = "author",cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
+    @JsonManagedReference(value="author-id")
     private List<Book> authorBooks = new ArrayList<>();
 }

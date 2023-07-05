@@ -1,9 +1,12 @@
 package com.library.Library.service;
 
+import com.library.Library.entity.Author;
 import com.library.Library.entity.Book;
 import com.library.Library.entity.Member;
 import com.library.Library.repository.BookRepository;
 import com.library.Library.repository.MemberRepository;
+import com.library.Library.service.dto.AuthorDto;
+import com.library.Library.service.dto.MemberDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +14,15 @@ import java.util.List;
 
 @Service
 public class MemberServiceImpl implements MemberService{
+
+    private Member changedMemberDtoToMember(MemberDto memberDto){
+        Member member = new Member();
+        //member.setMemberId(memberDto.getMemberId());
+        member.setMFirstName(memberDto.getMFirstName());
+        member.setMLastName(memberDto.getMLastName());
+        member.setEmail(memberDto.getEmail());
+        return member;
+    }
 
     @Autowired
     MemberRepository memberRepository;
@@ -23,18 +35,20 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public Member save(Member member) {
+    public Member save(MemberDto memberDto) {
+        Member member = changedMemberDtoToMember(memberDto);
         memberRepository.save(member);
         return member;
     }
 
     @Override
-    public Boolean update(Member member, Long memberId) {
+    public Boolean update(MemberDto memberDto, Long memberId) {
         Member dbMember = memberRepository.findById(memberId).orElse(null);
+        Member member = changedMemberDtoToMember(memberDto);
         if(dbMember != null){
-            dbMember.setMFirstName(dbMember.getMFirstName());
-            dbMember.setMLastName(dbMember.getMLastName());
-            dbMember.setEmail(dbMember.getEmail());
+            dbMember.setMFirstName(member.getMFirstName());
+            dbMember.setMLastName(member.getMLastName());
+            dbMember.setEmail(member.getEmail());
             memberRepository.save(dbMember);
             return Boolean.TRUE;
         }

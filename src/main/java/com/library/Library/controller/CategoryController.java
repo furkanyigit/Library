@@ -4,6 +4,7 @@ import com.library.Library.entity.Book;
 import com.library.Library.entity.Category;
 import com.library.Library.service.CategoryService;
 import com.library.Library.service.CategoryServiceImpl;
+import com.library.Library.service.dto.CategoryDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,13 +23,13 @@ public class CategoryController {
     }
 
     @PostMapping("/save")
-    public Category save(@RequestBody  Category category){
-        return categoryService.save(category);
+    public Category save(@RequestBody CategoryDto categoryDto){
+        return categoryService.save(categoryDto);
     }
 
     @PutMapping("/update/{id}")
-    public Boolean update(@RequestBody Category category, @RequestParam Long categoryId){
-        return categoryService.update(category,categoryId);
+    public Boolean update(@RequestBody CategoryDto categoryDto, @PathVariable Long categoryId){
+        return categoryService.update(categoryDto,categoryId);
     }
 
     @DeleteMapping("/delete/{id}")

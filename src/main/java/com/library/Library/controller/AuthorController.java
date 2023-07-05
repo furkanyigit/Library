@@ -2,6 +2,7 @@ package com.library.Library.controller;
 
 import com.library.Library.entity.Author;
 import com.library.Library.service.AuthorService;
+import com.library.Library.service.dto.AuthorDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +22,14 @@ public class AuthorController {
         return authorService.getAllAuthor();
     }
     @PostMapping("/save")
-    public ResponseEntity<Author> save(@RequestBody Author author){
-        Author createdAuthor =  authorService.save(author);
-        return new ResponseEntity<>(createdAuthor, HttpStatus.CREATED);
+    public /*ResponseEntity<AuthorDto> */ AuthorDto save(@RequestBody AuthorDto authorDto){
+         authorService.save(authorDto);
+         return authorDto;
+        // return new ResponseEntity<>(createdAuthor, HttpStatus.CREATED);
     }
     @PutMapping("/update")
-    public Boolean update(@RequestBody Author author, @RequestParam Long authorId){
-        return authorService.update(author,authorId);
+    public Boolean update(@RequestBody AuthorDto authorDto, @RequestParam Long authorId){
+        return authorService.update(authorDto,authorId);
     }
     @DeleteMapping("/delete")
     public Boolean delete(@RequestParam Long authorId){

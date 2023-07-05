@@ -1,7 +1,10 @@
 package com.library.Library.service;
 
+
+import com.library.Library.entity.Author;
 import com.library.Library.entity.Book;
-import com.library.Library.repository.BookRepository;
+import com.library.Library.repository.*;
+import com.library.Library.service.dto.BookDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +12,30 @@ import java.util.List;
 
 @Service
 public class BookServiceImpl implements BookService{
+
+    @Autowired
+    AuthorRepository authorRepository;
+    @Autowired
+    CategoryRepository categoryRepository;
+    @Autowired
+    MemberRepository memberRepository;
+    @Autowired
+    PublisherRepository publisherRepository;
+
+    private Book changedBookDtoToBook(BookDto bookDto){
+        Book book = new Book();
+        //book.setBookId(bookDto.getBookId());
+        book.setBookName(bookDto.getBookName());
+        book.setPages(bookDto.getPages());
+        book.setPublishDate(bookDto.getPublishDate());
+        book.setStock(bookDto.getStock());
+        Author author = authorRepository.findById(bookDto.getAuthorId());
+        book.setAuthor(author);
+        book.setCategory(bookDto.getCategory());
+        book.setMember(bookDto.getMember());
+        book.setPublisher(bookDto.getPublisher());
+        return book;
+    }
 
     @Autowired
     BookRepository bookRepository;
@@ -19,17 +46,19 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public Book save(Book book) {
+    public Book save(BookDto bookDto) {
+        Book book = changedBookDtoToBook(bookDto);
         bookRepository.save(book);
         return book;
     }
 
     @Override
-    public Boolean update(Book book, Long bookId) {
+    public Boolean update(BookDto bookDto, Long bookId) {
         Book dbBook =  bookRepository.findById(bookId).orElse(null);
+        Book book = changedBookDtoToBook(bookDto);
         if(dbBook != null){
             dbBook.setBookName(book.getBookName());
-            dbBook.setPages(dbBook.getPages());
+            dbBook.setPages(book.getPages());
             dbBook.setAuthor(book.getAuthor());
             dbBook.setPages(book.getPages());
             dbBook.setStock(book.getStock());

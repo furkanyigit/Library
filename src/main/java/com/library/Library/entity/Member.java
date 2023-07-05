@@ -22,6 +22,7 @@ import java.util.Set;
 public class Member{
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long memberId;
     @Column(name = "member_first_name")
@@ -32,6 +33,6 @@ public class Member{
     private String email;
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
+    @JsonManagedReference(value="member-id")
     private List<Book> borrowBook = new ArrayList<Book>();
 }

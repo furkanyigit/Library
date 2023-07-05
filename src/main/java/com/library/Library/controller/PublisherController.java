@@ -3,6 +3,7 @@ package com.library.Library.controller;
 import com.library.Library.entity.Member;
 import com.library.Library.entity.Publisher;
 import com.library.Library.service.PublisherServiceImpl;
+import com.library.Library.service.dto.PublisherDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,14 +17,14 @@ public class PublisherController {
     PublisherServiceImpl publisherService;
 
     @PostMapping("/save")
-    public ResponseEntity<Publisher> save(@RequestBody Publisher publisher){
-        Publisher publisher1 =  publisherService.save(publisher);
+    public ResponseEntity<Publisher> save(@RequestBody PublisherDto publisherDto){
+        Publisher publisher1 =  publisherService.save(publisherDto);
         return new ResponseEntity<>(publisher1, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
-    public Boolean update(@RequestBody Publisher publisher, @RequestParam Long publisherId){
-        return publisherService.update(publisher,publisherId);
+    public Boolean update(@RequestBody PublisherDto publisherDto, @RequestParam Long publisherId){
+        return publisherService.update(publisherDto,publisherId);
     }
 
     @DeleteMapping("/delete/{id}")
