@@ -22,18 +22,17 @@ public class BookServiceImpl implements BookService{
     @Autowired
     PublisherRepository publisherRepository;
 
-    private Book changedBookDtoToBook(BookDto bookDto){
+    public Book changedBookDtoToBook(BookDto bookDto){
         Book book = new Book();
         //book.setBookId(bookDto.getBookId());
         book.setBookName(bookDto.getBookName());
         book.setPages(bookDto.getPages());
         book.setPublishDate(bookDto.getPublishDate());
         book.setStock(bookDto.getStock());
-        Author author = authorRepository.findById(bookDto.getAuthorId());
-        book.setAuthor(author);
-        book.setCategory(bookDto.getCategory());
-        book.setMember(bookDto.getMember());
-        book.setPublisher(bookDto.getPublisher());
+        book.setAuthor(authorRepository.findById(bookDto.getAuthorId()).orElse(null));
+        book.setCategory(categoryRepository.findById(bookDto.getCategoryId()).orElse(null));
+        book.setMember(memberRepository.findById(bookDto.getMemberId()).orElse(null));
+        book.setPublisher(publisherRepository.findById(bookDto.getPublisherId()).orElse(null));
         return book;
     }
 

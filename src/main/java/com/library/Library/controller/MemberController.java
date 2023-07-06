@@ -6,7 +6,6 @@ import com.library.Library.service.MemberServiceImpl;
 import com.library.Library.service.dto.MemberDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,17 +28,17 @@ public class MemberController {
         return new ResponseEntity<>(member, HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{id}")
-    public Boolean update(@RequestBody MemberDto memberDto, @RequestParam Long memberId){
+    @PutMapping("/update/{memberId}")
+    public Boolean update(@RequestBody MemberDto memberDto, @PathVariable Long memberId){
         return memberService.update(memberDto,memberId);
     }
     @PostMapping("/borrowed")
-    public List<Book> memberBorrowedList(@RequestParam Long memberId, @RequestParam Long bookId){
+    public Book memberBorrowedList(@RequestParam Long memberId, @RequestParam Long bookId){
         return memberService.memberBorrowedList(memberId,bookId);
     }
 
     @DeleteMapping("delete/{id}")
-    public Boolean delete(@RequestParam Long memberId){
-        return memberService.delete(memberId);
+    public Boolean delete(@PathVariable Long id){
+        return memberService.delete(id);
     }
 }

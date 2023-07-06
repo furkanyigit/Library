@@ -27,12 +27,12 @@ public class AuthorController {
          return authorDto;
         // return new ResponseEntity<>(createdAuthor, HttpStatus.CREATED);
     }
-    @PutMapping("/update")
-    public Boolean update(@RequestBody AuthorDto authorDto, @RequestParam Long authorId){
+    @PutMapping("/update/{authorId}")
+    public Boolean update(@RequestBody AuthorDto authorDto, @PathVariable Long authorId){
         return authorService.update(authorDto,authorId);
     }
-    @DeleteMapping("/delete")
-    public Boolean delete(@RequestParam Long authorId){
+    @DeleteMapping("/delete/{authorId}")
+    public Boolean delete(@PathVariable Long authorId){
         return authorService.delete(authorId);
     }
 }

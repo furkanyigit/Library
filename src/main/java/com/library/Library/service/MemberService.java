@@ -13,5 +13,5 @@ public interface MemberService {
     Member save(MemberDto memberDto);
     Boolean update(MemberDto authorDto, Long memberId);
     Boolean delete(Long memberId);
-    List<Book> memberBorrowedList(Long memberId, Long bookId);
+    Book memberBorrowedList(Long memberId, Long bookId);
 }
