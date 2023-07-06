@@ -34,5 +34,5 @@ public class Member{
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value="member-id")
-    private List<Book> borrowBook = new ArrayList<Book>();
+    private Set<Book> borrowBook = new HashSet<Book>();
 }

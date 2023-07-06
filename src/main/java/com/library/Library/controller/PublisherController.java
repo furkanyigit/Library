@@ -22,13 +22,13 @@ public class PublisherController {
         return new ResponseEntity<>(publisher1, HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{id}")
-    public Boolean update(@RequestBody PublisherDto publisherDto, @RequestParam Long publisherId){
+    @PutMapping("/update/{publisherId}")
+    public Boolean update(@RequestBody PublisherDto publisherDto, @PathVariable Long publisherId){
         return publisherService.update(publisherDto,publisherId);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public Boolean delete(@RequestParam Long publisherId){
+    @DeleteMapping("/delete/{publisherId}")
+    public Boolean delete(@PathVariable Long publisherId){
         return publisherService.delete(publisherId);
     }
 }

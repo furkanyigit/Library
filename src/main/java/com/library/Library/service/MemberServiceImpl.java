@@ -6,6 +6,7 @@ import com.library.Library.entity.Member;
 import com.library.Library.repository.BookRepository;
 import com.library.Library.repository.MemberRepository;
 import com.library.Library.service.dto.AuthorDto;
+import com.library.Library.service.dto.BookDto;
 import com.library.Library.service.dto.MemberDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,8 @@ public class MemberServiceImpl implements MemberService{
     MemberRepository memberRepository;
     @Autowired
     private BookRepository bookRepository;
+    @Autowired
+    BookServiceImpl bookService;
 
     @Override
     public List<Member> getAll() {
@@ -66,13 +69,16 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public List<Book> memberBorrowedList(Long memberId, Long bookId) {
+    public Book memberBorrowedList(Long memberId, Long bookId){
         Book borrowedBook = bookRepository.findById(bookId).orElse(null);
         Member borrowedMember = memberRepository.findById(memberId).orElse(null);
-        if(borrowedBook.getStock()> 1){
+        if(borrowedBook.getStock()>0){
             borrowedBook.setStock(borrowedBook.getStock()-1);
+            borrowedMember.getBorrowBook().add(borrowedBook);
+            //borrowedBook.setMember(borrowedMember);
+            bookRepository.save(borrowedBook);
+            memberRepository.save(borrowedMember);
         }
-        borrowedBook.setStock(borrowedBook.getStock()-1);
-        return borrowedMember.getBorrowBook();
+        return borrowedBook;
     }
 }

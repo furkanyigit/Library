@@ -27,13 +27,13 @@ public class CategoryController {
         return categoryService.save(categoryDto);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/update/{categoryId}")
     public Boolean update(@RequestBody CategoryDto categoryDto, @PathVariable Long categoryId){
         return categoryService.update(categoryDto,categoryId);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public Boolean delete(@RequestParam Long categoryId){
+    @DeleteMapping("/delete/{categoryId}")
+    public Boolean delete(@PathVariable Long categoryId){
         return categoryService.delete(categoryId);
     }
 }
