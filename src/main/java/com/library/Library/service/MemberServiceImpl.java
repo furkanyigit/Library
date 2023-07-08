@@ -3,15 +3,20 @@ package com.library.Library.service;
 import com.library.Library.entity.Author;
 import com.library.Library.entity.Book;
 import com.library.Library.entity.Member;
+import com.library.Library.exception.MyException;
 import com.library.Library.repository.BookRepository;
 import com.library.Library.repository.MemberRepository;
 import com.library.Library.service.dto.AuthorDto;
 import com.library.Library.service.dto.BookDto;
 import com.library.Library.service.dto.MemberDto;
+import org.aspectj.bridge.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class MemberServiceImpl implements MemberService{
@@ -72,6 +77,13 @@ public class MemberServiceImpl implements MemberService{
     public Book memberBorrowedList(Long memberId, Long bookId){
         Book borrowedBook = bookRepository.findById(bookId).orElse(null);
         Member borrowedMember = memberRepository.findById(memberId).orElse(null);
+        try{
+            borrowedMember.getBorrowBook().stream().filter(book -> book.getBookId().equals(bookId));
+            throw new MyException("aynı kitap iki kez ödünç alınamaz");
+        }
+        catch (MyException e){
+            System.out.println("Message : " + e.getMessage());
+        }
         if(borrowedBook.getStock()>0){
             borrowedBook.setStock(borrowedBook.getStock()-1);
             borrowedMember.getBorrowBook().add(borrowedBook);

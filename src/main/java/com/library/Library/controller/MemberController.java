@@ -2,6 +2,8 @@ package com.library.Library.controller;
 
 import com.library.Library.entity.Book;
 import com.library.Library.entity.Member;
+import com.library.Library.exception.MyException;
+import com.library.Library.repository.BookRepository;
 import com.library.Library.service.MemberServiceImpl;
 import com.library.Library.service.dto.MemberDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ public class MemberController {
 
     @Autowired
     MemberServiceImpl memberService;
+    @Autowired
+    BookRepository bookRepository;
 
     @GetMapping("/get-all")
     public List<Member> getAll(){
@@ -33,8 +37,9 @@ public class MemberController {
         return memberService.update(memberDto,memberId);
     }
     @PostMapping("/borrowed")
-    public Book memberBorrowedList(@RequestParam Long memberId, @RequestParam Long bookId){
-        return memberService.memberBorrowedList(memberId,bookId);
+    public Book memberBorrowedList(@RequestParam Long memberId, @RequestParam Long bookId) throws MyException{
+        memberService.memberBorrowedList(memberId,bookId);
+        return bookRepository.findById(bookId).orElse(null);
     }
 
     @DeleteMapping("delete/{id}")
